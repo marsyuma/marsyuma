@@ -10,7 +10,7 @@ public class Main {
             System.out.println("Hoki");
         }
         else{
-            System.out.println("Sial");
+            System.out.println("Bapak kau");
         }
     }
 }
