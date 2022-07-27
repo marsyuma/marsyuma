@@ -1,72 +1,44 @@
-import java.util.Scanner;
+class PriceTag {
+    double COMMISION_MULTIPLIER = 0.05f;
+    double BOTTOM_PRICE = 20000.0f;
+    double BOTTOM_FEE = 1000.0f;
+    double instancePrice;
+    double discount;
+    double tempPrice;
 
-class Driver {
-    int getPromo(){
-        return 0;
+    PriceTag(double price, double discount) {
+        instancePrice = price;
+        discount = discount;
     }
-    String getCustomer(){
-        return "oop";
+
+    double getAdminFee(){
+        tempPrice = DiscountedPrice();
+        if(tempPrice < BOTTOM_PRICE){
+            tempPrice = BOTTOM_FEE;
+            return tempPrice;
+        }
+        return tempPrice * COMMISION_MULTIPLIER;
     }
-    float getDiscountPercentage(int before, int after){
-        float selisih;
-        float persen;
-        if(before<after){
+
+    double DiscountedPrice(){
+        if(discount > 100){
+            discount = 100;
             return 0;
         }
-        else {
-            selisih = before - after;
-            persen = (selisih / before) * 100;
-            return persen;
-        }
+        tempPrice = instancePrice - (instancePrice * discount/100);
+        return tempPrice;
     }
 
-    float getDiscountedPrice(int price, float discountedPercentage){
-        if(discountedPercentage > 100){
-            discountedPercentage = 100;
-        }
-        return price * ((100-discountedPercentage)/100);
+    double getAdjustedPrice(){
+        instancePrice = DiscountedPrice() + getAdminFee();
+        return instancePrice;
     }
-
-    float getOriginalPrice(int discountedPrice, float discountPercentage){
-        if(discountedPrice < 0){
-            return 0;
-
-
-        }
-        return (100/(100-discountPercentage))*discountedPrice;
-    }
-    double getCommissionMultiplier(){
-        return 0.05;
-    }
-
-    double getAdjustedPrice(int price){
-        double back;
-        back = price + (price * 0.05);
-        return back;
-    }
-    float getAdminFee(int price){
-        return price * 0.05f;
-    }
-
 }
+
+
 public class Main {
-
-    public static void main(String[] args){
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Masukan harga awal= ");
-        int harga = scan.nextInt();
-        float diskon;
-        System.out.print("Masukan harga akhir= ");
-        int hargaDiskon = scan.nextInt();
-
-        Driver gojek = new Driver();
-        diskon = gojek.getDiscountPercentage(harga, hargaDiskon);
-        System.out.println("Besar diskon = " + diskon);
-        System.out.println("Harga yang didiskon = " + gojek.getDiscountedPrice(harga,diskon));
-        System.out.println("Harga asli = " + gojek.getOriginalPrice(hargaDiskon, diskon));
-        System.out.println("Harga setelah komisi = " + gojek.getAdjustedPrice(hargaDiskon));
-        System.out.println("Besar komisi = " + gojek.getAdminFee(hargaDiskon));
-
-
+    public static void main(String[] args) throws Exception{
+        PriceTag tag = new PriceTag(100000, 20);
+        System.out.println("Harga akhir = " + tag.DiscountedPrice());
     }
 }
