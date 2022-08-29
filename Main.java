@@ -111,6 +111,8 @@ class ProductRating{
 
 class Recognizable{
     Recognizable(int id);
+    int alpha;
+
 }
 public class Main {
     public static void main(String[] args) {
